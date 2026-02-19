@@ -1,1 +1,1 @@
-hola primer commit
+##En la conexion de la base de datos se uso pool y para? permite Multiples conexiones y es mas rapido
