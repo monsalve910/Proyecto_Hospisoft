@@ -1,4 +1,1 @@
-hola primer commit.
-
-- IMPORTANTE :
-validar segun el perfil que paginas se muestran eso se hace en componentes/navbar.html.
+##En la conexion de la base de datos se uso pool y para? permite Multiples conexiones y es mas rapido
