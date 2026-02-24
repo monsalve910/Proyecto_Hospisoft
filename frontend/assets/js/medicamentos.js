@@ -26,6 +26,7 @@ async function cargarMedicamentos() {
         <tr>
           <td>${m.nombre}</td>
           <td>${m.descripcion}</td>
+          <td>${m.tipo}</td>
           <td>${m.stock}</td>
           <td>${m.precio}</td>
 <td class="text-center">
@@ -99,6 +100,7 @@ async function abrirModalEditar(id) {
 
     document.getElementById("nombre").value = medicamento.nombre;
     document.getElementById("descripcion").value = medicamento.descripcion;
+    document.getElementById("tipo").value = medicamento.tipo_id;
     document.getElementById("stock").value = medicamento.stock;
     document.getElementById("precio").value = medicamento.precio;
 
@@ -186,6 +188,7 @@ function obtenerDatosFormulario() {
     nombre: document.getElementById("nombre").value,
     descripcion: document.getElementById("descripcion").value,
     stock: document.getElementById("stock").value,
+    tipo_id: document.getElementById("tipo").value,
     precio: document.getElementById("precio").value,
   };
 }
@@ -195,8 +198,30 @@ function limpiarFormulario() {
   document.getElementById("descripcion").value = "";
   document.getElementById("stock").value = "";
   document.getElementById("precio").value = "";
+  document.getElementById("tipo").value = "";
 }
 
 function cerrarModal() {
   $("#modal").modal("hide");
 }
+
+// Carga los tipos de medicamentos para la modal de creación/edición
+async function cargarTiposMedicamento() {
+  try {
+    const res = await fetch("http://localhost:3000/api/tipomedicamentos");
+    const tipos = await res.json();
+    const select = document.getElementById("tipo");
+
+    tipos.forEach((tipo) => {
+      const option = document.createElement("option");
+      option.value = tipo.id_tipo;
+      option.text = tipo.nombre_tipo;
+      select.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error al cargar tipos de medicamento:", error);
+  }
+}
+
+cargarTiposMedicamento();
+
