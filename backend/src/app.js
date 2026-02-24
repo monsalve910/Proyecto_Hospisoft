@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import pacienteRoutes from "./routes/paciente.routes.js";
+import medicoRoutes from "./routes/medico.routes.js";
+import especialidadRoutes from "./routes/especialidades.routes.js";
 
 const app = express();
 
@@ -8,6 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/pacientes", pacienteRoutes);
+app.use("/api/medicos", medicoRoutes);
+app.use("/api/especialidades", especialidadRoutes);
 
 app.listen(3000, () => {
   console.log("Servidor corriendo en http://localhost:3000");

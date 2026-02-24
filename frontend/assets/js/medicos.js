@@ -1,4 +1,5 @@
 const API = "http://localhost:3000/api/medicos";
+const API_ESPECIALIDADES = "http://localhost:3000/api/especialidades";
 
 const tabla = document.getElementById("tablaMedicos");
 const modal = document.getElementById("modal");
@@ -6,7 +7,10 @@ const btnNuevo = document.getElementById("btnNuevo");
 const btnGuardar = document.getElementById("guardarMedico");
 const inputBuscar = document.getElementById("buscar");
 
-document.addEventListener("DOMContentLoaded", cargarMedicos);
+document.addEventListener("DOMContentLoaded", () => {
+  cargarMedicos();
+  cargarEspecialidades();
+});
 btnNuevo.addEventListener("click", abrirModalCrear);
 inputBuscar.addEventListener("input", filtrarMedicos);
 
@@ -22,7 +26,7 @@ async function cargarMedicos() {
 
     tabla.innerHTML = "";
 
-    medicos.forEach(m => {
+    medicos.forEach((m) => {
       tabla.innerHTML += `
         <tr>
           <td>${m.nombre}</td>
@@ -32,15 +36,37 @@ async function cargarMedicos() {
           <td>${m.email}</td>
           <td>
 
-            <button onclick="abrirModalEditar(${m.id_medico})">Editar</button>
-            <button onclick="eliminarMedico(${m.id_medico})">Eliminar</button>
+            <button class="btn btn-warning btn-sm mr-2" onclick="abrirModalEditar(${m.id_medico})">Editar</button>
+            <button class="btn btn-danger btn-sm" onclick="eliminarMedico(${m.id_medico})">Eliminar</button>
           </td>
         </tr>
       `;
     });
-
   } catch (error) {
     // Swal.fire("Error", "No se pudieron cargar los medicos", "error");
+  }
+}
+
+//!cargar especialidades para el select del formulario
+
+async function cargarEspecialidades() {
+  try {
+    const res = await fetch(API_ESPECIALIDADES);
+    const especialidades = await res.json();
+
+    const select = document.getElementById("especialidad");
+
+    select.innerHTML = '<option value="" disabled selected>Seleccione una especialidad</option>';
+
+    especialidades.forEach(e => {
+      const option = document.createElement("option");
+      option.value = e.id_especialidad; // debe coincidir con tu BD
+      option.textContent = e.nombre_especialidad; // debe coincidir con tu BD
+      select.appendChild(option);
+    });
+
+  } catch (error) {
+    console.error("Error cargando especialidades:", error);
   }
 }
 
@@ -56,7 +82,6 @@ function abrirModalCrear() {
   btnGuardar.onclick = guardarNuevoMedico;
 
   $("#modal").modal("show");
-
 }
 
 /* ================= CREAR MEDICO ================= */
@@ -68,14 +93,13 @@ async function guardarNuevoMedico() {
     await fetch(API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(medico)
+      body: JSON.stringify(medico),
     });
 
     await Swal.fire("Éxito", "Medico creado correctamente", "success");
 
     cerrarModal();
     cargarMedicos();
-
   } catch (error) {
     Swal.fire("Error", "No se pudo crear el medico", "error");
   }
@@ -95,16 +119,13 @@ async function abrirModalEditar(id) {
 
     document.getElementById("nombre").value = medico.nombre;
     document.getElementById("apellido").value = medico.apellido;
-        document.getElementById("especialidad").value = medico.especialidad;
+    document.getElementById("especialidad").value = medico.especialidad_id;
     document.getElementById("telefono").value = medico.telefono;
     document.getElementById("email").value = medico.email;
-
 
     btnGuardar.onclick = actualizarMedico;
 
     $("#modal").modal("show");
-
-
   } catch (error) {
     Swal.fire("Error", "No se pudo cargar el paciente", "error");
   }
@@ -119,14 +140,17 @@ async function actualizarMedico() {
     await fetch(`${API}/${medicoEditando}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(medico)
+      body: JSON.stringify(medico),
     });
 
-    await Swal.fire("Actualizado", "Medico actualizado correctamente", "success");
+    await Swal.fire(
+      "Actualizado",
+      "Medico actualizado correctamente",
+      "success",
+    );
 
     cerrarModal();
     cargarMedicos();
-
   } catch (error) {
     Swal.fire("Error", "No se pudo actualizar el medico", "error");
   }
@@ -143,7 +167,7 @@ async function eliminarMedico(id) {
     confirmButtonColor: "#d33",
     cancelButtonColor: "#3085d6",
     confirmButtonText: "Sí, eliminar",
-    cancelButtonText: "Cancelar"
+    cancelButtonText: "Cancelar",
   });
 
   if (result.isConfirmed) {
@@ -153,11 +177,10 @@ async function eliminarMedico(id) {
       await Swal.fire(
         "Eliminado",
         "El Medico fue eliminado correctamente",
-        "success"
+        "success",
       );
 
       cargarMedicos();
-
     } catch (error) {
       Swal.fire("Error", "No se pudo eliminar el medico", "error");
     }
@@ -170,7 +193,7 @@ function filtrarMedicos() {
   const texto = inputBuscar.value.toLowerCase();
   const filas = document.querySelectorAll("#tablaMedicos tr");
 
-  filas.forEach(fila => {
+  filas.forEach((fila) => {
     fila.style.display = fila.innerText.toLowerCase().includes(texto)
       ? ""
       : "none";
@@ -195,10 +218,8 @@ function limpiarFormulario() {
   document.getElementById("especialidad").value = "";
   document.getElementById("telefono").value = "";
   document.getElementById("email").value = "";
-
 }
 
 function cerrarModal() {
   $("#modal").modal("hide");
 }
-
