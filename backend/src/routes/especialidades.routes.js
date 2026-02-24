@@ -4,4 +4,8 @@ import * as especialidadController from "../controllers/especialidades.controlle
 const router = Router();
 
 router.get("/", especialidadController.getEspecialidades);
+router.get("/:id", especialidadController.getEspecialidadById);
+router.post("/", especialidadController.createEspecialidad);
+router.put("/:id", especialidadController.updateEspecialidad);
+router.delete("/:id", especialidadController.deleteEspecialidad);
 export default router;
