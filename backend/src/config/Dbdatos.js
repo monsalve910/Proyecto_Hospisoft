@@ -8,7 +8,7 @@ import mysql from "mysql2/promise";
 const pool = mysql.createPool({
   host: "localhost",
   user: "root",
-  password: "", // si tienes contraseña, agrégala aquí
+  password: "", 
   database: "hospisoft",
   waitForConnections: true,
   connectionLimit: 10,
