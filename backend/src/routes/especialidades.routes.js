@@ -3,9 +3,9 @@ import * as especialidadController from "../controllers/especialidades.controlle
 
 const router = Router();
 
-router.get("/", especialidadController.getEspecialidades);
-router.get("/:id", especialidadController.getEspecialidadById);
-router.post("/", especialidadController.createEspecialidad);
-router.put("/:id", especialidadController.updateEspecialidad);
-router.delete("/:id", especialidadController.deleteEspecialidad);
+router.get("/listartodos", especialidadController.getEspecialidades);
+router.get("/listarporid/:id", especialidadController.getEspecialidadById);
+router.post("/crear", especialidadController.createEspecialidad);
+router.put("/editar/:id", especialidadController.updateEspecialidad);
+router.delete("/eliminar/:id", especialidadController.deleteEspecialidad);
 export default router;
