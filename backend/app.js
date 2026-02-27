@@ -4,7 +4,7 @@ import pacienteRoutes from "./src/routes/paciente.routes.js";
 import medicamentoRoutes from "./src/routes/medicamento.routes.js";
 import medicoRoutes from "./src/routes/medico.routes.js";
 import especialidadRoutes from "./src/routes/especialidades.routes.js";
-import tipoMedicamentoRoutes from "./src/routes/tipomedicamento.routes.js";
+import tipoMedicamentoRoutes from "./src/routes/tipoMedicamento.routes.js";
 const app = express();
 
 app.use(cors());
