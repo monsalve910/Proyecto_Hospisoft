@@ -3,10 +3,10 @@ import * as medicamentoController from "../controllers/medicamento.controller.js
 
 const router = Router();
 
-router.get("/", medicamentoController.getMedicamentos);
-router.get("/:id", medicamentoController.getMedicamentoById);
-router.post("/", medicamentoController.createMedicamento);
-router.put("/:id", medicamentoController.updateMedicamento);
-router.delete("/:id", medicamentoController.deleteMedicamento);
+router.get("/listartodos", medicamentoController.getMedicamentos);
+router.get("/listarporid/:id", medicamentoController.getMedicamentoById);
+router.post("/crear", medicamentoController.createMedicamento);
+router.put("/editar/:id", medicamentoController.updateMedicamento);
+router.delete("/eliminar/:id", medicamentoController.deleteMedicamento);
 
 export default router;
