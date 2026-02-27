@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
-import pacienteRoutes from "./routes/paciente.routes.js";
-import medicamentoRoutes from "./routes/medicamento.routes.js";
-import medicoRoutes from "./routes/medico.routes.js";
-import especialidadRoutes from "./routes/especialidades.routes.js";
-import tipoMedicamentoRoutes from "./routes/tipomedicamento.routes.js";
+import pacienteRoutes from "./src/routes/paciente.routes.js";
+import medicamentoRoutes from "./src/routes/medicamento.routes.js";
+import medicoRoutes from "./src/routes/medico.routes.js";
+import especialidadRoutes from "./src/routes/especialidades.routes.js";
+import tipoMedicamentoRoutes from "./src/routes/tipomedicamento.routes.js";
 const app = express();
 
 app.use(cors());
