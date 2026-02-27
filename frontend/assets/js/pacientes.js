@@ -9,6 +9,7 @@ const inputBuscar = document.getElementById("buscar");
 document.addEventListener("DOMContentLoaded", cargarPacientes);
 btnNuevo.addEventListener("click", abrirModalCrear);
 inputBuscar.addEventListener("input", filtrarPacientes);
+let listaPacientes = [];
 
 let modoEdicion = false;
 let pacienteEditando = null;
@@ -18,31 +19,34 @@ let pacienteEditando = null;
 async function cargarPacientes() {
   try {
     const res = await fetch(API);
-    const pacientes = await res.json();
+    listaPacientes = await res.json(); // guardamos todos
 
-    tabla.innerHTML = "";
-
-    pacientes.forEach(p => {
-      tabla.innerHTML += `
-        <tr>
-          <td>${p.nombre}</td>
-          <td>${p.apellido}</td>
-          <td>${p.documento}</td>
-          <td>${p.telefono}</td>
-          <td>${p.email}</td>
-          <td>${p.direccion}</td>
-          <td>${p.fechaNacimiento}</td>
-          <td>
-            <button onclick="abrirModalEditar(${p.id_paciente})">Editar</button>
-            <button onclick="eliminarPaciente(${p.id_paciente})">Eliminar</button>
-          </td>
-        </tr>
-      `;
-    });
+    pintarTabla(listaPacientes);
 
   } catch (error) {
-    // Swal.fire("Error", "No se pudieron cargar los pacientes", "error");
+    console.error(error);
   }
+}
+function pintarTabla(pacientes) {
+  tabla.innerHTML = "";
+
+  pacientes.forEach(p => {
+    tabla.innerHTML += `
+      <tr>
+        <td>${p.id_paciente}</td>
+        <td>${p.nombre}</td>
+        <td>${p.apellido}</td>
+        <td>${p.telefono}</td>
+        <td>${p.email}</td>
+        <td>${p.direccion}</td>
+        <td>${p.fechaNacimiento.split("T")[0]}</td>
+        <td>
+          <button class="btn btn-warning btn-sm mr-2" onclick="abrirModalEditar(${p.id_paciente})">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="eliminarPaciente(${p.id_paciente})">Eliminar</button>
+        </td>
+      </tr>
+    `;
+  });
 }
 
 /* ================= MODAL CREAR ================= */
@@ -94,9 +98,9 @@ async function abrirModalEditar(id) {
 
     document.getElementById("tituloModal").innerText = "Editar Paciente";
 
+    document.getElementById("documento").value = paciente.id_paciente;
     document.getElementById("nombre").value = paciente.nombre;
     document.getElementById("apellido").value = paciente.apellido;
-    document.getElementById("documento").value = paciente.documento;
     document.getElementById("telefono").value = paciente.telefono;
     document.getElementById("email").value = paciente.email;
     document.getElementById("direccion").value = paciente.direccion;
@@ -170,13 +174,19 @@ async function eliminarPaciente(id) {
 
 function filtrarPacientes() {
   const texto = inputBuscar.value.toLowerCase();
-  const filas = document.querySelectorAll("#tablaPacientes tr");
 
-  filas.forEach(fila => {
-    fila.style.display = fila.innerText.toLowerCase().includes(texto)
-      ? ""
-      : "none";
-  });
+  if (texto === "") {
+    pintarTabla(listaPacientes);
+    return;
+  }
+
+  const filtrados = listaPacientes.filter(p =>
+    p.id_paciente.toString().includes(texto) ||
+    p.nombre.toLowerCase().includes(texto) ||
+    p.apellido.toLowerCase().includes(texto)
+  );
+
+  pintarTabla(filtrados);
 }
 
 /* ================= UTILIDADES ================= */
