@@ -13,20 +13,20 @@ export const getPacienteById = async (id) => {
 
 //Crear un nuevo paciente
 export const createPaciente = async (paciente) => {
-  const {nombre,apellido,documento,telefono,email,direccion,fechaNacimiento} = paciente;
+  const {documento,nombre,apellido,telefono,email,direccion,fechaNacimiento} = paciente;
   const [result] = await pool.query(
-    "INSERT INTO paciente (nombre,apellido,documento,telefono,email,direccion,fechaNacimiento) VALUES (?, ?, ?, ?, ?, ?, ?)",
-    [nombre,apellido,documento,telefono,email,direccion,fechaNacimiento]
+    "INSERT INTO paciente (id_paciente,nombre,apellido,telefono,email,direccion,fechaNacimiento) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [documento,nombre,apellido,telefono,email,direccion,fechaNacimiento]
   );
   return result;
 };
 
 //Actualizar un paciente existente
 export const updatePaciente = async (id, paciente) => {
-  const {nombre,apellido,documento,telefono,email,direccion,fechaNacimiento} = paciente;
+  const {nombre,apellido,telefono,email,direccion,fechaNacimiento} = paciente;
     const [result] = await pool.query(
-      "UPDATE paciente SET nombre=?, apellido=?, documento=?, telefono=?, email=?, direccion=?, fechaNacimiento=? WHERE id_paciente=?",
-      [nombre,apellido,documento,telefono,email,direccion,fechaNacimiento,id]
+      "UPDATE paciente SET nombre=?, apellido=?,telefono=?, email=?, direccion=?, fechaNacimiento=? WHERE id_paciente=?",
+      [nombre,apellido,telefono,email,direccion,fechaNacimiento,id]
     );
     return result;
   };
