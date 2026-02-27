@@ -1,13 +1,13 @@
-import pool from "../config/Dbdatos.js";
+import {db} from "../config/Dbdatos.js";
 //Obtener todos los tipos de medicamentos
 export const getTiposMedicamento = async () => {
-  const [rows] = await pool.query("SELECT * FROM tipo_medicamentos");
+  const [rows] = await db.query("SELECT * FROM tipo_medicamentos");
   return rows;
 };
 
 //Obtener un tipo de medicamento por ID
 export const getTipoMedicamentoById = async (id) => {
-  const [rows] = await pool.query(
+  const [rows] = await db.query(
     "SELECT * FROM tipo_medicamentos WHERE id_tipo = ?",
     [id],
   );
@@ -17,7 +17,7 @@ export const getTipoMedicamentoById = async (id) => {
 //Crear un nuevo tipo de medicamento
 export const createTipoMedicamento = async (tipoMedicamento) => {
   const { nombre_tipo } = tipoMedicamento;
-  const [result] = await pool.query(
+  const [result] = await db.query(
     "INSERT INTO tipo_medicamentos (nombre_tipo) VALUES (?)",
     [nombre_tipo],
   );
@@ -28,7 +28,7 @@ export const createTipoMedicamento = async (tipoMedicamento) => {
 export const updateTipoMedicamento = async (id, tipoMedicamento) => {
   const { nombre_tipo } = tipoMedicamento;
 
-  const [result] = await pool.query(
+  const [result] = await db.query(
     "UPDATE tipo_medicamentos SET nombre_tipo=? WHERE id_tipo=?",
     [nombre_tipo, id],
   );
@@ -37,7 +37,7 @@ export const updateTipoMedicamento = async (id, tipoMedicamento) => {
 
 //Eliminar un tipo de medicamento
 export const deleteTipoMedicamento = async (id) => {
-  const [result] = await pool.query(
+  const [result] = await db.query(
     "DELETE FROM tipo_medicamentos WHERE id_tipo = ?",
     [id],
   );

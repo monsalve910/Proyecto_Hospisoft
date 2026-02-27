@@ -1,7 +1,7 @@
-import pool from "../config/Dbdatos.js";
+import {db} from "../config/Dbdatos.js";
 //Obtener todos los medicamentos
 export const getMedicamentos = async () => {
-  const [rows] = await pool.query(`
+  const [rows] = await db.query(`
     SELECT 
       medicamento.id_medicamento AS id_medicamento, 
       medicamento.nombre AS nombre, 
@@ -17,7 +17,7 @@ export const getMedicamentos = async () => {
 
 //Obtener un medicamento por ID
 export const getMedicamentoById = async (id) => {
-  const [rows] = await pool.query(
+  const [rows] = await db.query(
     "SELECT * FROM medicamento WHERE id_medicamento = ?",
     [id],
   );
@@ -27,7 +27,7 @@ export const getMedicamentoById = async (id) => {
 //Crear un nuevo medicamento
 export const createMedicamento = async (medicamento) => {
   const { nombre, descripcion, stock, precio, tipo_id } = medicamento;
-  const [result] = await pool.query(
+  const [result] = await db.query(
     "INSERT INTO medicamento (nombre,descripcion,stock,precio,tipo_id) VALUES (?, ?, ?, ?, ?)",
     [nombre, descripcion, stock, precio, tipo_id],
   );
@@ -37,7 +37,7 @@ export const createMedicamento = async (medicamento) => {
 //Actualizar un medicamento existente
 export const updateMedicamento = async (id, medicamento) => {
   const { nombre, descripcion, stock, precio, tipo_id } = medicamento;
-  const [result] = await pool.query(
+  const [result] = await db.query(
     "UPDATE medicamento SET nombre=?, descripcion=?, stock=?, precio=?, tipo_id=? WHERE id_medicamento=?",
     [nombre, descripcion, stock, precio, tipo_id, id],
   );
@@ -46,7 +46,7 @@ export const updateMedicamento = async (id, medicamento) => {
 
 //Eliminar un medicamento
 export const deleteMedicamento = async (id) => {
-  const [result] = await pool.query(
+  const [result] = await db.query(
     "DELETE FROM medicamento WHERE id_medicamento = ?",
     [id],
   );
